@@ -1,0 +1,6 @@
+{
+  "name": "course-poc",
+  "short_name": "course-poc",
+  "start_url": "/",
+  "display": "standalone"
+}

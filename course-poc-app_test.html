@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>course-poc-app test</title>
+
+    <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+    <script src="../../node_modules/mocha/mocha.js"></script>
+    <script src="../../node_modules/chai/chai.js"></script>
+    <script src="../../node_modules/wct-mocha/wct-mocha.js"></script>
+
+    <script type="module" src="../../src/course-poc-app/course-poc-app.js"></script>
+  </head>
+  <body>
+
+    <test-fixture id="BasicTestFixture">
+      <template>
+        <course-poc-app></course-poc-app>
+      </template>
+    </test-fixture>
+
+    <script>
+
+      describe('COURSE POC APP', function() {      
+        var element, eleShadowRoot;
+        window.MyAppGlobals = {'rootPath': '/'};
+        beforeEach(function(){
+              element = fixture('BasicTestFixture');
+              eleShadowRoot = element.shadowRoot;
+        });
+        it('instantiating the element with default properties works', function() { 
+          assert.exists(element.page);
+          assert.exists(element.routeData);
+          assert.exists(element.selectedTab);
+          assert.exists(element.loggedUser);
+        });
+
+      });
+    </script>
+
+
+  </body>
+</html>

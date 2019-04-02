@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+  <script src="../node_modules/sinon/pkg/sinon.js"></script>
+  <script src="../node_modules/@polymer/iron-ajax/iron-ajax.js"></script>
+
+  <script type="module" src="../../src/course-poc-app/course-dashboard.js"></script>
+</head>
+<body>
+  <test-fixture id="MainFixture">
+    <template>
+        <iron-ajax url="http://localhost:3000/course/rest/getAllCourse">
+        </iron-ajax>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite('Should Instantiate Main APP', () => {
+      let element, elementShowdawRoot, server, request;
+      setup(()=>{console.log('test');
+        element = fixture('MainFixture');
+        elementShowdawRoot = element.shadowRoot;
+        server = sinon.fakeServer.create();
+        server.respondWith(
+            'GET',
+            '/course/rest/getAllCourse', 
+            [
+                200,
+                {'content-type':'application/json'},
+                '{"success":true}'
+            ]
+        );
+      });
+
+      test('Iron Ajax Call', () => {
+        let ironAjax = elementShowdawRoot.querySelector('iron-ajax');
+        console.log(ironAjax)
+        request = ironAjax.generateRequest();
+        server.respond();
+        assert.isObject(request.response);
+        assert.equal(request.response.success, true);
+        this.retries(2);
+      });
+    });
+  </script>
+</body>
+</html>

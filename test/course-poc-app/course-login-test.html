@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>course-poc-app test</title>
+
+    <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+    <script src="../../node_modules/mocha/mocha.js"></script>
+    <script src="../../node_modules/chai/chai.js"></script>
+    <script src="../../node_modules/wct-mocha/wct-mocha.js"></script>
+
+    <script type="module" src="../../src/course-poc-app/course-login.js"></script>
+  </head>
+  <body>
+
+    <test-fixture id="BasicTestFixture">
+      <template>
+        <course-login></course-login>
+      </template>
+    </test-fixture>
+
+    <script>
+
+      describe('Course Login Form', function() {      
+        var element, eleShadowRoot;
+        beforeEach(function(){
+              element = fixture('BasicTestFixture');
+              eleShadowRoot = element.shadowRoot;
+        });
+
+        it('instantiating the element with default properties works', function() { 
+          assert.exists(element.userName);
+          assert.exists(element.userPwd);
+          assert.exists(element.userData);
+        });
+        it('iron form exists', function() { 
+          let eleForm = eleShadowRoot.querySelector('iron-form');
+          assert.exists(eleForm);
+        });
+        it('iron form field username', function() { 
+          let userNameField = eleShadowRoot.querySelector('iron-form').querySelector('paper-input[type=text]');
+          element.userName ="HCL";
+          assert.exists(userNameField);
+          assert.isTrue(userNameField.hasAttribute('name'));
+          assert.isTrue(userNameField.hasAttribute('auto-validate'));
+          assert.isTrue(userNameField.hasAttribute('required'));
+          assert.isTrue(userNameField.hasAttribute('label'));
+          assert.isTrue(userNameField.hasAttribute('error-message'));
+          assert.equal(userNameField.getAttribute('error-message'),'Enter Email');
+          assert.equal(userNameField.getAttribute('name'),'userName');
+          assert.equal(userNameField.getAttribute('label'),'Email');
+          assert.equal(userNameField.value,element.userName);
+        });
+        it('iron form field password', function() { 
+          let pwdField = eleShadowRoot.querySelector('iron-form').querySelector('paper-input[type=password]');
+          element.userPwd ="test";
+          assert.exists(pwdField);
+          assert.isTrue(pwdField.hasAttribute('name'));
+          assert.isTrue(pwdField.hasAttribute('auto-validate'));
+          assert.isTrue(pwdField.hasAttribute('required'));
+          assert.isTrue(pwdField.hasAttribute('label'));
+          assert.isTrue(pwdField.hasAttribute('error-message'));
+          assert.equal(pwdField.getAttribute('error-message'),'Enter Password');
+          assert.equal(pwdField.getAttribute('name'),'password');
+          assert.equal(pwdField.getAttribute('label'),'Password');
+          assert.equal(pwdField.value,element.userPwd);
+        });
+        it('iron form paper button', function(done){
+          let buttonField = eleShadowRoot.querySelector('iron-form').querySelector('paper-button');
+          assert.exists(buttonField);
+          assert.isTrue(buttonField.hasAttribute('name'));
+          assert.isTrue(buttonField.hasAttribute('raised'));
+          assert.isTrue(buttonField.click());
+          buttonField.addEventListener('click', function() {            
+            done();
+          });      
+
+        });
+        it('iron form validate', function(done){
+          let formEle = eleShadowRoot.querySelector('iron-form');
+          assert.isTrue(formEle.validate());
+          formEle.submit();
+        });
+
+      });
+    </script>
+
+
+  </body>
+</html>
